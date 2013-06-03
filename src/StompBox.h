@@ -1,35 +1,33 @@
 #ifndef __StompBox_h__
 #define __StompBox_h__
 
+enum PatchParameterId {
+  PARAMETER_A,
+  PARAMETER_B,
+  PARAMETER_C,
+  PARAMETER_D
+};
+
 class AudioInputBuffer {
 public:
-  virtual void getSamples(int from, int length, short* data) = 0;
+  virtual ~AudioInputBuffer(){}
   virtual void getSamples(int from, int length, float* data) = 0;
+  virtual float* getSamples() = 0;
   virtual int getSize() = 0;
 };
 
 class AudioOutputBuffer {
 public:    
-  virtual void setSamples(int from, int length, short* data) = 0;
+  virtual ~AudioOutputBuffer(){}
   virtual void setSamples(int from, int length, float* data) = 0;
+  virtual void setSamples(float* data) = 0;
   virtual int getSize() = 0;
 };
 
-#define PARAMETER_A 0
-#define PARAMETER_B 1
-#define PARAMETER_C 2
-#define PARAMETER_D 3
-#define PARAMETER_E 4
-
 class Patch {
-protected:
-  uint16_t blocksize;
-  uint16_t samplerate;
 public:
-  /** sets @param value to a value between 0 and 4096 */
-  void getParameterValue(int pid, int &value);
-  /** sets @param value to a value between 0.0 and 1.0 */
-  void getParameterValue(int pid, float &value);
+  virtual ~Patch(){}
+  float getParameterValue(PatchParameterId pid);
   int getBlockSize();
   double getSampleRate();
 public:
